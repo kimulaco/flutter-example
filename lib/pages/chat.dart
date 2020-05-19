@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../widgets/ChatMessage.dart';
+import '../widgets/MessageForm.dart';
 
 class ChatPage extends StatefulWidget {
   @override
@@ -6,53 +8,17 @@ class ChatPage extends StatefulWidget {
 }
 
 class ChatPageState extends State<ChatPage> {
-  final _textController = TextEditingController();
   final List<String> _messages = [];
 
   String _userName = '';
 
-  void _handleSubmitted(String message) {
-    setState(() {
-      _messages.add(message);
-      _textController.clear();
-    });
-  }
-
-  Widget _messageForm() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 8.0),
-      child: Row(
-        children: [
-          Flexible(
-            child: TextField(
-              controller: _textController,
-              onSubmitted: _handleSubmitted,
-              decoration: InputDecoration.collapsed(hintText: 'Send a message'),
-            ),
-          ),
-          IconTheme(
-            data: IconThemeData(color: Theme.of(context).accentColor),
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 4.0),
-              child: IconButton(
-                icon: const Icon(Icons.send),
-                onPressed: () {
-                  _handleSubmitted(_textController.text);
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _messageList() {
     return ListView.builder(
+      padding: EdgeInsets.symmetric(vertical: 16.0),
       itemCount: _messages.length,
       itemBuilder: (context, i) {
         return ListTile(
-          title: Text(_messages[i]),
+          title: ChatMessage(text: _messages[i]),
         );
       },
     );
@@ -66,16 +32,21 @@ class ChatPageState extends State<ChatPage> {
       appBar: AppBar(
         title: Text(_userName),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            _messageForm(),
-            Expanded(
-              child: _messageList(),
-            ),
-          ],
-        ),
+      body: Column(
+        children: [
+          Expanded(
+            child: _messageList(),
+          ),
+          Divider(),
+          MessageForm(
+            hintText: 'Send message',
+            onSubmitted: (String value) {
+              setState(() {
+                _messages.add(value);
+              });
+            },
+          ),
+        ],
       ),
     );
   }
