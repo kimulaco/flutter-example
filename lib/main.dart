@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import './pages/list.dart';
-import './pages/chat.dart';
+import './pages/List.dart';
+import './pages/Chat.dart';
 
 void main() => {
   runApp(MyApp())
