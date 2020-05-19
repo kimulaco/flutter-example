@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './chat.dart';
 
 final List<String> users = <String>[
   'Sam Porter Bridges',
@@ -44,7 +45,13 @@ class ListPageState extends State<ListPage> {
         },
       ),
       onTap: () {
-        Navigator.pushNamed(context, '/chat', arguments: userName);
+        Navigator.pushNamed(
+          context,
+          '/chat',
+          arguments: ChatPageArg(
+            userName: userName,
+          )
+        );
       },
     );
   }

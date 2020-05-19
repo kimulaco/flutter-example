@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 import '../widgets/ChatMessage.dart';
 import '../widgets/MessageForm.dart';
 
+class ChatPageArg {
+  final String userName;
+
+  ChatPageArg({
+    @required this.userName
+  });
+}
+
 class ChatPage extends StatefulWidget {
   @override
   ChatPageState createState() => ChatPageState();
@@ -26,7 +34,8 @@ class ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    _userName = ModalRoute.of(context).settings.arguments;
+    final ChatPageArg arg = ModalRoute.of(context).settings.arguments;
+    _userName = arg.userName;
 
     return Scaffold(
       appBar: AppBar(
