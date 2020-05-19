@@ -57,11 +57,11 @@ class ListPageState extends State<ListPage> {
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16.0),
+        itemCount: (users.length * 2),
         itemBuilder: (context, i) {
           if (i.isOdd) return Divider();
           return _createUserLink(users[i ~/ 2]);
         },
-        itemCount: (users.length * 2),
       ),
     );
   }
