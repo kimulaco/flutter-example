@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class MessageForm extends StatefulWidget {
-  String hintText = 'Send message';
-  Function(String value) onSubmitted = (String value) {};
+  final String hintText;
+  final Function(String value) onSubmitted;
 
   MessageForm({Key key, this.hintText, this.onSubmitted}) : super(key: key);
 

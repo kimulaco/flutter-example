@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../widgets/ChatMessage.dart';
 import '../widgets/MessageForm.dart';
+import '../utils/ChatDB.dart';
 import '../utils/Users.dart';
 
 class ChatPageArg {
@@ -20,11 +21,23 @@ class ChatPage extends StatefulWidget {
 class ChatPageState extends State<ChatPage> {
   final List<String> _messages = [];
   Map<String, dynamic> _user = {};
+  ChatDB chatDB;
 
   Future _getUser(String userId) async {
     final Map<String, dynamic> user = await getUser(userId);
     setState(() {
       _user = user;
+    });
+  }
+
+  Future _getChatMessage() async {
+    chatDB = new ChatDB('chat.db', 'chat');
+    await chatDB.open();
+    final List<Chat> chatList = await chatDB.getAll();
+    setState(() {
+      chatList.forEach((Chat chat) {
+        _messages.add(chat.message);
+      });
     });
   }
 
@@ -44,7 +57,7 @@ class ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     final ChatPageArg arg = ModalRoute.of(context).settings.arguments;
 
-     _getUser(arg.userId);
+    _getUser(arg.userId);
 
     return Scaffold(
       appBar: AppBar(
@@ -59,6 +72,10 @@ class ChatPageState extends State<ChatPage> {
           MessageForm(
             hintText: 'Send message',
             onSubmitted: (String value) {
+              chatDB.insert(Chat(
+                // id: _messages.length,
+                message: value,
+              ));
               setState(() {
                 _messages.add(value);
               });
@@ -67,5 +84,11 @@ class ChatPageState extends State<ChatPage> {
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getChatMessage();
   }
 }
