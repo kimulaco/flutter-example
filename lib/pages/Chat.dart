@@ -1,12 +1,14 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '../widgets/ChatMessage.dart';
 import '../widgets/MessageForm.dart';
+import '../utils/Users.dart';
 
 class ChatPageArg {
-  final String userName;
+  final String userId;
 
   ChatPageArg({
-    @required this.userName
+    @required this.userId,
   });
 }
 
@@ -17,8 +19,14 @@ class ChatPage extends StatefulWidget {
 
 class ChatPageState extends State<ChatPage> {
   final List<String> _messages = [];
+  Map<String, dynamic> _user = {};
 
-  String _userName = '';
+  Future _getUser(String userId) async {
+    final Map<String, dynamic> user = await getUser(userId);
+    setState(() {
+      _user = user;
+    });
+  }
 
   Widget _messageList() {
     return ListView.builder(
@@ -35,11 +43,12 @@ class ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     final ChatPageArg arg = ModalRoute.of(context).settings.arguments;
-    _userName = arg.userName;
+
+     _getUser(arg.userId);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_userName),
+        title: Text(_user.containsKey('name') ? _user['name']  : ''),
       ),
       body: Column(
         children: [

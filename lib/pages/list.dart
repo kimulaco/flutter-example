@@ -1,17 +1,8 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import './Chat.dart';
-
-final List<String> users = <String>[
-  'Sam Porter Bridges',
-  'Clifford Cliff Unger',
-  'Deadman',
-  'Fragile',
-  'Samantha America Strand',
-  'Higgs Monaghan',
-  'Die-Hardman',
-  'Heartman',
-  'Bridget Strand',
-];
+import '../widgets/UserIcon.dart';
+import '../utils/Users.dart';
 
 class ListPage extends StatefulWidget {
   @override
@@ -20,13 +11,22 @@ class ListPage extends StatefulWidget {
 
 class ListPageState extends State<ListPage> {
   final Set<String> _saved = Set<String>();
+  List<Map<String, dynamic>> users = [];
 
-  Widget _createUserLink(String userName) {
-    final bool alreadySaved = _saved.contains(userName);
+  Future _getUsersList() async {
+    final List<Map<String, dynamic>> usersList = await getUsersList();
+    setState(() {
+      users = usersList;
+    });
+  }
+
+  Widget _createUserLink(user) {
+    final bool alreadySaved = _saved.contains(user['id']);
 
     return ListTile(
+      leading: UserIcon(user),
       title: Text(
-        userName,
+        user['name'],
         style: TextStyle(fontSize: 18.0),
       ),
       trailing: IconButton(
@@ -37,9 +37,9 @@ class ListPageState extends State<ListPage> {
         onPressed: () {
           setState(() {
             if (alreadySaved) {
-              _saved.remove(userName);
+              _saved.remove(user['id']);
             } else {
-              _saved.add(userName);
+              _saved.add(user['id']);
             }
           });
         },
@@ -49,7 +49,7 @@ class ListPageState extends State<ListPage> {
           context,
           '/chat',
           arguments: ChatPageArg(
-            userName: userName,
+            userId: user['id'],
           )
         );
       },
@@ -71,5 +71,11 @@ class ListPageState extends State<ListPage> {
         },
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getUsersList();
   }
 }
