@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 
-class MessageForm extends StatelessWidget {
-  final String hintText;
-  final Function(String value) onSubmitted;
+class MessageForm extends StatefulWidget {
+  String hintText = 'Send message';
+  Function(String value) onSubmitted = (String value) {};
+
+  MessageForm({Key key, this.hintText, this.onSubmitted}) : super(key: key);
+
+  @override
+  MessageFormState createState() => MessageFormState();
+}
+
+class MessageFormState extends State<MessageForm> {
   final _textController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
-  MessageForm({
-    this.hintText,
-    this.onSubmitted
-  });
-
   @override
   Widget build(BuildContext context) {
+    final bool isEmptyForm = _textController.text.length <= 0;
+
     return Container(
       padding: EdgeInsets.only(left: 16.0),
       child: Row(
@@ -20,8 +25,8 @@ class MessageForm extends StatelessWidget {
           Flexible(
             child: TextField(
               controller: _textController,
-              onSubmitted: onSubmitted,
-              decoration: InputDecoration.collapsed(hintText: hintText),
+              onSubmitted: isEmptyForm ? null : widget.onSubmitted,
+              decoration: InputDecoration.collapsed(hintText: widget.hintText),
               focusNode: _focusNode,
             ),
           ),
@@ -32,8 +37,8 @@ class MessageForm extends StatelessWidget {
               child: IconButton(
                 icon: const Icon(Icons.send),
                 onPressed: () {
-                  if (_textController.text.length <= 0) return;
-                  onSubmitted(_textController.text);
+                  if (isEmptyForm) return;
+                  widget.onSubmitted(_textController.text);
                   _textController.clear();
                   _focusNode.requestFocus();
                 },
