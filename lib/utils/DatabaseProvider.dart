@@ -16,7 +16,6 @@ class DatabaseProvider {
   });
 
   Future<void> open() async {
-    print('++++++++++++++ $databaseName');
     final String dbPath = join(await getDatabasesPath(), databaseName);
     db = await openDatabase(
       dbPath,

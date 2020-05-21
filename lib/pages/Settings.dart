@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../utils/ConfirmDialog.dart';
+import '../utils/User.dart';
+import '../utils/FormDialog.dart';
 import '../utils/ChatDB.dart';
 
 class SettingsButton {
@@ -18,7 +20,15 @@ class SettingsPage extends StatefulWidget {
 }
 
 class SettingsPageState extends State<SettingsPage> {
-  ChatDB chatDB;
+  final User user = User();
+  String userName;
+
+  Future _setUser() async {
+    await user.sync();
+    setState(() {
+      userName = user.name;
+    });
+  }
 
   Widget _createSettingButton(SettingsButton setting) {
     return ListTile(
@@ -49,6 +59,21 @@ class SettingsPageState extends State<SettingsPage> {
           );
         }
       ),
+      SettingsButton(
+        title: 'User Name: $userName',
+        onTap: () {
+          showFormDialog(
+            context: context,
+            title: '新しいユーザー名を設定',
+            onAllow: (String value) async {
+              await user.update({ 'name': value });
+              setState(() {
+                userName = value;
+              });
+            }
+          );
+        }
+      ),
     ];
 
     return Scaffold(
@@ -64,5 +89,11 @@ class SettingsPageState extends State<SettingsPage> {
         },
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _setUser();
   }
 }
