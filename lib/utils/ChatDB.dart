@@ -24,7 +24,7 @@ class ChatDB {
   ChatDB(this.dbName, this.tableName);
 
   Future<void> open() async {
-    final String dbPath = join(await getDatabasesPath(), dbName);
+    final dbPath = join(await getDatabasesPath(), dbName);
     db = await openDatabase(
       dbPath,
       version: 1,
@@ -39,14 +39,19 @@ class ChatDB {
     );
   }
 
-  Future<void> insert(Chat chat) async {
+  Future<void> delete() async {
+    final dbPath = join(await getDatabasesPath(), dbName);
+    await deleteDatabase(dbPath);
+  }
+
+  Future<void> insertRecode(Chat chat) async {
     await db.insert(
       tableName,
       chat.toMap(),
     );
   }
 
-  Future<void> update(int id, Chat chat) async {
+  Future<void> updateRecode(int id, Chat chat) async {
     await db.update(
       tableName,
       chat.toMap(),
@@ -56,7 +61,7 @@ class ChatDB {
     );
   }
 
-  Future<void> delete(List<int> id) async {
+  Future<void> deleteRecode(List<int> id) async {
     await db.delete(
       tableName,
       where: 'id = ?',
@@ -64,12 +69,12 @@ class ChatDB {
     );
   }
 
-  Future<List<Chat>> getAll() async {
+  Future<List<Chat>> getAllRecode() async {
     final List<Map<String, dynamic>> maps = await db.query(tableName);
     return _mapListToChatList(maps);
   }
 
-  Future<List<Chat>> get(List<int> id) async {
+  Future<List<Chat>> getRecode(List<int> id) async {
     final List<Map<String, dynamic>> maps = await db.query(
       tableName,
       where: 'id IN (${id.join(', ')})',

@@ -61,6 +61,15 @@ class ListPageState extends State<ListPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Chat'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.settings),
+            color: Colors.grey,
+            onPressed: () {
+              Navigator.pushNamed(context, '/settings');
+            },
+          ),
+        ],
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16.0),

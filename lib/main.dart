@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './pages/List.dart';
 import './pages/Chat.dart';
+import './pages/Settings.dart';
 
 void main() => {
   runApp(MyApp())
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder> {
         '/': (BuildContext context) => ListPage(),
         '/chat': (BuildContext context) => ChatPage(),
+        '/settings': (BuildContext context) => SettingsPage(),
       },
     );
   }
