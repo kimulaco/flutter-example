@@ -21,7 +21,7 @@ class ChatDB {
   String tableName;
   Database db;
 
-  ChatDB(String dbName, String tableName);
+  ChatDB(this.dbName, this.tableName);
 
   Future<void> open() async {
     final String dbPath = join(await getDatabasesPath(), dbName);
@@ -32,7 +32,7 @@ class ChatDB {
         return _db.execute('''
           CREATE TABLE $tableName(
             id INTEGER PRIMARY KEY,
-            message TEXT,
+            message TEXT
           )
         ''');
       },
@@ -47,7 +47,6 @@ class ChatDB {
   }
 
   Future<List<Chat>> getAll() async {
-    // if (db == null) return [];
     final List<Map<String, dynamic>> maps = await db.query(tableName);
 
     if (maps.length <= 0) {
