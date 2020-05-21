@@ -64,7 +64,7 @@ class ListPageState extends State<ListPage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings),
-            color: Colors.grey,
+            color: Colors.white,
             onPressed: () {
               Navigator.pushNamed(context, '/settings');
             },
