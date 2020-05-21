@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 
 class ChatMessage extends StatelessWidget {
   final String text;
-  final String _name = 'kimulaco';
+  final String userName;
 
-  ChatMessage({this.text});
+  ChatMessage({
+    @required this.text,
+    @required this.userName,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +17,7 @@ class ChatMessage extends StatelessWidget {
         children: [
           Container(
             margin: const EdgeInsets.only(right: 16.0),
-            child: CircleAvatar(child: Text(_name[0])),
+            child: CircleAvatar(child: Text(userName[0])),
           ),
           Text(text),
         ],

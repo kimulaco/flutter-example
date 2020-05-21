@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../widgets/ChatMessage.dart';
 import '../widgets/MessageForm.dart';
+import '../utils/User.dart';
 import '../utils/ChatDB.dart';
 import '../utils/Users.dart';
 
@@ -20,13 +21,15 @@ class ChatPage extends StatefulWidget {
 
 class ChatPageState extends State<ChatPage> {
   final List<String> _messages = [];
-  Map<String, dynamic> _user = {};
+  final User user = User();
+  Map<String, dynamic> _toUser = {};
+  String userName;
   ChatDB chatDB;
 
-  Future _getUser(String userId) async {
-    final Map<String, dynamic> user = await getUser(userId);
+  Future _getToUser(String userId) async {
+    final Map<String, dynamic> toUser = await getUser(userId);
     setState(() {
-      _user = user;
+      _toUser = toUser;
     });
   }
 
@@ -41,13 +44,23 @@ class ChatPageState extends State<ChatPage> {
     });
   }
 
+  Future _setUser() async {
+    await user.sync();
+    setState(() {
+      userName = user.name;
+    });
+  }
+
   Widget _messageList() {
     return ListView.builder(
       padding: EdgeInsets.symmetric(vertical: 16.0),
       itemCount: _messages.length,
       itemBuilder: (context, i) {
         return ListTile(
-          title: ChatMessage(text: _messages[i]),
+          title: ChatMessage(
+            text: _messages[i],
+            userName: userName,
+          ),
         );
       },
     );
@@ -57,11 +70,11 @@ class ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     final ChatPageArg arg = ModalRoute.of(context).settings.arguments;
 
-    _getUser(arg.userId);
+    _getToUser(arg.userId);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_user.containsKey('name') ? _user['name']  : ''),
+        title: Text(_toUser.containsKey('name') ? _toUser['name']  : ''),
       ),
       body: Column(
         children: [
@@ -89,5 +102,6 @@ class ChatPageState extends State<ChatPage> {
   void initState() {
     super.initState();
     _getChatMessage();
+    _setUser();
   }
 }
