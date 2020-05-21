@@ -46,20 +46,6 @@ class SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     List<SettingsButton> settings = [
       SettingsButton(
-        title: 'Clear cache',
-        onTap: () {
-          showConfirmDialog(
-            context: context,
-            title: '確認',
-            message: 'キャッシュをクリアするとメッセージが全て削除されますがよろしいですか？',
-            onAllow: () async {
-              final chatDB = ChatDB();
-              await chatDB.delete();
-            }
-          );
-        }
-      ),
-      SettingsButton(
         title: 'User Name: $userName',
         onTap: () {
           showFormDialog(
@@ -70,6 +56,20 @@ class SettingsPageState extends State<SettingsPage> {
               setState(() {
                 userName = value;
               });
+            }
+          );
+        }
+      ),
+      SettingsButton(
+        title: 'Clear cache',
+        onTap: () {
+          showConfirmDialog(
+            context: context,
+            title: '確認',
+            message: 'キャッシュをクリアするとメッセージが全て削除されますがよろしいですか？',
+            onAllow: () async {
+              final chatDB = ChatDB();
+              await chatDB.delete();
             }
           );
         }
