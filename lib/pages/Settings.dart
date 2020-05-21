@@ -43,7 +43,7 @@ class SettingsPageState extends State<SettingsPage> {
             title: '確認',
             message: 'キャッシュをクリアするとメッセージが全て削除されますがよろしいですか？',
             onAllow: () async {
-              final chatDB = ChatDB('chat.db', 'chat');
+              final chatDB = ChatDB();
               await chatDB.delete();
             }
           );

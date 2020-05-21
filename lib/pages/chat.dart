@@ -31,9 +31,9 @@ class ChatPageState extends State<ChatPage> {
   }
 
   Future _getChatMessage() async {
-    chatDB = ChatDB('chat.db', 'chat');
+    chatDB = ChatDB();
     await chatDB.open();
-    final List<Chat> chatList = await chatDB.getAllRecode();
+    final List<Chat> chatList = await chatDB.getAll();
     setState(() {
       chatList.forEach((Chat chat) {
         _messages.add(chat.message);
@@ -72,8 +72,7 @@ class ChatPageState extends State<ChatPage> {
           MessageForm(
             hintText: 'Send message',
             onSubmitted: (String value) {
-              chatDB.insertRecode(Chat(
-                // id: _messages.length,
+              chatDB.insert(Chat(
                 message: value,
               ));
               setState(() {
