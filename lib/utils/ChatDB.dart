@@ -46,13 +46,38 @@ class ChatDB {
     );
   }
 
+  Future<void> update(int id, Chat chat) async {
+    await db.update(
+      tableName,
+      chat.toMap(),
+      where: 'id = ?',
+      whereArgs: [id],
+      conflictAlgorithm: ConflictAlgorithm.fail,
+    );
+  }
+
+  Future<void> delete(List<int> id) async {
+    await db.delete(
+      tableName,
+      where: 'id = ?',
+      whereArgs: id,
+    );
+  }
+
   Future<List<Chat>> getAll() async {
     final List<Map<String, dynamic>> maps = await db.query(tableName);
+    return _mapListToChatList(maps);
+  }
 
-    if (maps.length <= 0) {
-      return [];
-    }
+  Future<List<Chat>> get(List<int> id) async {
+    final List<Map<String, dynamic>> maps = await db.query(
+      tableName,
+      where: 'id IN (${id.join(', ')})',
+    );
+    return _mapListToChatList(maps);
+  }
 
+  List<Chat> _mapListToChatList(List<Map<String, dynamic>> maps) {
     return List.generate(maps.length, (i) {
       return Chat(
         id: maps[i]['id'],
