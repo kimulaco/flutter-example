@@ -1,4 +1,4 @@
-package com.example.flutter_first_app
+package com.example.bridges
 
 import io.flutter.embedding.android.FlutterActivity
 

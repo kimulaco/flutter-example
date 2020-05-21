@@ -3,27 +3,27 @@ Future<List<Map<String, dynamic>>> getUsersList() async {
     {
       'id': 'sam',
       'name': 'Sam Porter Bridges',
-      'iconUrl': 'assets/img/sam.jpg'
+      'iconUrl': 'assets/img/user/sam.jpg'
     },
     {
       'id': 'cliff',
       'name': 'Clifford Cliff Unger',
-      'iconUrl': 'assets/img/cliff.jpg'
+      'iconUrl': 'assets/img/user/cliff.jpg'
     },
     {
       'id': 'ameri',
       'name': 'Samantha America Strand',
-      'iconUrl': 'assets/img/ameri.jpg'
+      'iconUrl': 'assets/img/user/ameri.jpg'
     },
     {
       'id': 'higgs',
       'name': 'Higgs Monaghan',
-      'iconUrl': 'assets/img/higgs.jpg'
+      'iconUrl': 'assets/img/user/higgs.jpg'
     },
     {
       'id': 'fragile',
       'name': 'Fragile',
-      'iconUrl': 'assets/img/fragile.jpg'
+      'iconUrl': 'assets/img/user/fragile.jpg'
     }
   ]);
 }
