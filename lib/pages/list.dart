@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import './Chat.dart';
 import '../widgets/UserIcon.dart';
-import '../utils/Users.dart';
+import '../utils/Friends.dart';
 
 class ListPage extends StatefulWidget {
   @override
@@ -11,22 +11,22 @@ class ListPage extends StatefulWidget {
 
 class ListPageState extends State<ListPage> {
   final Set<String> _saved = Set<String>();
-  List<Map<String, dynamic>> users = [];
+  List<Map<String, dynamic>> friends = [];
 
-  Future _getUsersList() async {
-    final List<Map<String, dynamic>> usersList = await getUsersList();
+  Future _getFriendList() async {
+    final List<Map<String, dynamic>> friendList = await getFriendList();
     setState(() {
-      users = usersList;
+      friends = friendList;
     });
   }
 
-  Widget _createUserLink(user) {
-    final bool alreadySaved = _saved.contains(user['id']);
+  Widget _createFriendLink(friend) {
+    final bool alreadySaved = _saved.contains(friend['id']);
 
     return ListTile(
-      leading: UserIcon(user),
+      leading: UserIcon(friend),
       title: Text(
-        user['name'],
+        friend['name'],
         style: TextStyle(fontSize: 18.0),
       ),
       trailing: IconButton(
@@ -37,9 +37,9 @@ class ListPageState extends State<ListPage> {
         onPressed: () {
           setState(() {
             if (alreadySaved) {
-              _saved.remove(user['id']);
+              _saved.remove(friend['id']);
             } else {
-              _saved.add(user['id']);
+              _saved.add(friend['id']);
             }
           });
         },
@@ -49,7 +49,7 @@ class ListPageState extends State<ListPage> {
           context,
           '/chat',
           arguments: ChatPageArg(
-            userId: user['id'],
+            friendId: friend['id'],
           )
         );
       },
@@ -73,10 +73,10 @@ class ListPageState extends State<ListPage> {
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16.0),
-        itemCount: (users.length * 2),
+        itemCount: (friends.length * 2),
         itemBuilder: (context, i) {
           if (i.isOdd) return Divider();
-          return _createUserLink(users[i ~/ 2]);
+          return _createFriendLink(friends[i ~/ 2]);
         },
       ),
     );
@@ -85,6 +85,6 @@ class ListPageState extends State<ListPage> {
   @override
   void initState() {
     super.initState();
-    _getUsersList();
+    _getFriendList();
   }
 }

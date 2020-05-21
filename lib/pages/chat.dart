@@ -4,13 +4,13 @@ import '../widgets/ChatMessage.dart';
 import '../widgets/MessageForm.dart';
 import '../utils/User.dart';
 import '../utils/ChatDB.dart';
-import '../utils/Users.dart';
+import '../utils/Friends.dart';
 
 class ChatPageArg {
-  final String userId;
+  final String friendId;
 
   ChatPageArg({
-    @required this.userId,
+    @required this.friendId,
   });
 }
 
@@ -22,14 +22,14 @@ class ChatPage extends StatefulWidget {
 class ChatPageState extends State<ChatPage> {
   final List<String> _messages = [];
   final User user = User();
-  Map<String, dynamic> _toUser = {};
+  Map<String, dynamic> friend = {};
   String userName;
   ChatDB chatDB;
 
-  Future _getToUser(String userId) async {
-    final Map<String, dynamic> toUser = await getUser(userId);
+  Future _getFriend(String userId) async {
+    final Map<String, dynamic> friendData = await getFriend(userId);
     setState(() {
-      _toUser = toUser;
+      friend = friendData;
     });
   }
 
@@ -70,11 +70,11 @@ class ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     final ChatPageArg arg = ModalRoute.of(context).settings.arguments;
 
-    _getToUser(arg.userId);
+    _getFriend(arg.friendId);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_toUser.containsKey('name') ? _toUser['name']  : ''),
+        title: Text(friend.containsKey('name') ? friend['name']  : ''),
       ),
       body: Column(
         children: [
