@@ -26,7 +26,7 @@ class User extends DatabaseProvider {
     final List<Map<String, dynamic>> maps = await getRecode([userId]);
 
     if (maps.length <= 0) {
-      final Map newUserMap = { 'name': 'Unknown' };
+      final Map<String, dynamic> newUserMap = { 'name': 'Unknown' };
       await insertRecode(newUserMap);
       return newUserMap;
     }

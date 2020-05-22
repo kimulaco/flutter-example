@@ -24,9 +24,10 @@ class SettingsPageState extends State<SettingsPage> {
   String userName;
 
   Future _setUser() async {
-    await user.sync();
+    await user.open();
+    final _user = await user.get();
     setState(() {
-      userName = user.name;
+      userName = _user['name'];
     });
   }
 

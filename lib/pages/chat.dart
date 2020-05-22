@@ -45,9 +45,10 @@ class ChatPageState extends State<ChatPage> {
   }
 
   Future _setUser() async {
-    await user.sync();
+    await user.open();
+    final _user = await user.get();
     setState(() {
-      userName = user.name;
+      userName = _user['name'];
     });
   }
 
